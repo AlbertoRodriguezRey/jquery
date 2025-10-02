@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Calculadora Mayor, Mediano y menor</h1>
+    <hr/>
+    <label>Número 1:</label>
+    <input type="text" id="cajanumero1"/>
+    <label>Número 2:</label>
+    <input type="text" id="cajanumero2"/>
+    <label>Número 3:</label>
+    <input type="text" id="cajanumero3"/>
+    <button id="botoncalcular">Calcular</button>
+    <h1 id="mayor"></h2>
+    <h1 id="mediano"></h2>
+    <h1 id="menor"></h2>
+    <script src="js/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#botoncalcular").click(function() {
+                var num1 = parseInt($("#cajanumero1").val());
+                var num2 = parseInt($("#cajanumero2").val());
+                var num3 = parseInt($("#cajanumero3").val());
+                var mayor, mediano, menor;
+                
+                // Primer bucle caso de que el primer número sea el mayor
+                if (num1 >= num2 && num1 >= num3) {
+                    mayor = num1;
+                    if (num2 >= num3) {
+                        mediano = num2;
+                        menor = num3;
+                    } else {
+                        mediano = num3;
+                        menor = num2;
+                    }
+                }
+                // Segundo bucle caso de que el segundo número sea el mayor
+                if (num2 >= num1 && num2 >= num3) {
+                    mayor = num2;
+                    if (num1 >= num3) {
+                        mediano = num1;
+                        menor = num3;
+                    } else {
+                        mediano = num3;
+                        menor = num1;
+                    }
+                }
+                // Tercer bucle caso de que el tercer número sea el mayor
+                if (num3 >= num1 && num3 >= num2) {
+                    mayor = num3;
+                    if (num1 >= num2) {
+                        mediano = num1;
+                        menor = num2;
+                    } else {
+                        mediano = num2;
+                        menor = num1;
+                    }
+                }
+
+                $("#mayor").text("El número mayor es: " + mayor);
+                $("#mediano").text("El número mediano es: " + mediano);
+                $("#menor").text("El número menor es: " + menor);
+            })
+            
+        })
+
+    </script>
+</body>
+</html>
