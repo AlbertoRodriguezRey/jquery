@@ -1,35 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        .rojo {
-            color: red;
-        }
-    </style>
 </head>
-<body>
-    <h1 class="rojo">Selectores JQuery</h1>
-    <h2>Esto es una prueba</h2>
-    <button class="rojo" id="boton1">Sou un boton 1</button>
-    <button id="boton2">Soy un boton 2</button>
-    <p class="rojo">Parrafo 1</p>
-    <p class="rojo">Parrafo 2</p>
-    <p>Parrafo 3</p>
-    <script src="js/jquery-3.7.1.js"></script>
-    <script>
-        $(document).ready(function() {
-            
-            $("p").click(function() {
-                $(this).hide();
-            })
+<style>
+    #1{
+        color:aqua;
+    }
+</style>
+<script src="js/jquery-3.7.1.js"></script>
+<script>
+    $(document).ready(function(){
+        // alert("Hola mundo");
+         $("h2").hide();
+         $("#1").hide();
+         //Podemos asociar acciones a los objetos//
+         $("p").click(function(){
+            $("#1").show()})
+        //Existe palabra clave this
+        //Accesdemos al objeto que ha hecho la llamada
+        $(this).hide()
+        //se pueden cambiar estilos
+        $(".rojo").click(function(){
+            $(this).hide        })
+        $("#foto").mouseover(function()
+    {
+        $(this).attr("src","img/image.png")
+    })
+     $("#foto").mouseleave(function()
+    {
+        $(this).attr("src","img/descargar (1).webp")
+    })
 
-            $(".rojo").click(function() {
-                $(this).hide();
-            })
-        })
-    </script>
+    })
+</script> 
+
+<body>
+    <div><h2>Hola</h2></div>
+    <button id="1">fffff</button>
+    <p>púlsame</p>
+    <img src="img/descargar (1).webp" id="foto">
 </body>
 </html>
