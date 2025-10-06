@@ -20,7 +20,7 @@
                 let url = "https://apiclientesxml.azurewebsites.net/";
                 let request = "api/Clientes/GetCochesXML";
                 $.get(url + request, function(data) {
-                    console.log("Leyendo...");
+                    console.log("Leyendo coches...");
                     var html = "";
                     $(data).find("coche").each(function(){
                         var id = $(this).attr("idcoche");
@@ -35,6 +35,7 @@
                 $("#listacoches").change(function() {
                     var id = $(this).val() //EL ID OPTION
                     $.get(url + request, function(data) {
+                        console.log("Leyendo detalles...");
                         var filtro = "coche[idcoche=" + id + "]";
                         var nodo = $(data).find(filtro).first();
                         var marca = nodo.find("marca").text();
@@ -58,13 +59,13 @@
                     console.log("Leyendo clientes...");
                     var html = "";
                     $(data).find("cliente").each(function(){
-                        var id = $(this).attr("idcliente");
-                        var nombre = $(this).find("nombre").text();
-                        var direccion = $(this).find("direccion").text();
-                        var email = $(this).find("email").text();
-                        var codigopostal = $(this).find("codigopostal").text();
-                        var paginaweb = $(this).find("paginaweb").text();
-                        var imagencliente = $(this).find("imagencliente").text();
+                        var id = $(this).attr("IDCLIENTE");
+                        var nombre = $(this).find("NOMBRE").text();
+                        var direccion = $(this).find("DIRECCION").text();
+                        var email = $(this).find("EMAIL").text();
+                        var codigopostal = $(this).find("CODIGOPOSTAL").text();
+                        var paginaweb = $(this).find("PAGINAWEB").text();
+                        var imagencliente = $(this).find("IMAGENCLIENTE").text();
                         var option = $("<option>");
                         option.val(id);
                         option.text(nombre);
@@ -74,14 +75,15 @@
                     $("#listaclientes").change(function() {
                         var id = $(this).val() //EL ID OPTION
                         $.get(url + request, function(data) {
-                            var filtro = "cliente[idcliente=" + id + "]";
+                            console.log("Leyendo detalles...");
+                            var filtro = "CLIENTE[IDCLIENTE=" + id + "]";
                             var nodo = $(data).find(filtro).first();
-                            var nombre = nodo.find("nombre").text();
-                            var direccion = nodo.find("direccion").text();
-                            var email = nodo.find("email").text();
-                            var codigopostal = nodo.find("codigopostal").text();
-                            var paginaweb = nodo.find("paginaweb").text();
-                            var imagencliente = nodo.find("imagencliente").text();
+                            var nombre = nodo.find("NOMBRE").text();
+                            var direccion = nodo.find("DIRECCION").text();
+                            var email = nodo.find("EMAIL").text();
+                            var codigopostal = nodo.find("CODIGOPOSTAL").text();
+                            var paginaweb = nodo.find("PAGINAWEB").text();
+                            var imagencliente = nodo.find("IMAGENCLIENTE").text();
                             var html = "<h2>" + nombre + "</h2>";
                             html += "<hr/>";
                             html += "<p>Dirección: " + direccion + "</p>";
