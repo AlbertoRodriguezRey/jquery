@@ -7,9 +7,12 @@
 </head>
 <body>
     <h1>Coches XML Service</h1>
-    <button id="botoncargar">Cargar datos</button>
-    <select id="listacoches"></select>
+    <button id="botoncargar">Cargar coches</button>
+    <select id="listacoches"></select><br/>
+    <button id="botonclientes">Cargar clientes</button>
+    <select id="listaclientes"></select>
     <div id="contenedor"></div>
+    <div id="contenedorclientes"></div>
     <script src="js/jquery-3.7.1.js"></script>
     <script>
         $(document).ready(function(){
@@ -34,9 +37,61 @@
                     $.get(url + request, function(data) {
                         var filtro = "coche[idcoche=" + id + "]";
                         var nodo = $(data).find(filtro).first();
+                        var marca = nodo.find("marca").text();
+                        var modelo = nodo.find("modelo").text();
                         var imagen = nodo.find("imagen").text();
-                        $("#contenedor").html("<img src='" + imagen + "'style='width:500px'/>");
+                        //VERSIÓN INICIAL
+                        // $("#contenedor").html("<img src='" + imagen + "'style='width:300px'/>");
+                        //MODIFICACIÓN PARA MEJORAR EL ESTILO AL MOSTRAR LA IMAGEN
+                        var html = "<h2>" + marca + " " + modelo + "</h2>";
+                        html += "<hr/>";
+                        html += "<img src='" + imagen + "' style='width:300px' />";
+                        $("#contenedor").html(html);
                     })
+                })
+            })
+
+            $("#botonclientes").click(function() {
+                let url = "https://apiclientesxml.azurewebsites.net/"; 
+                let request = "api/Clientes/GetClientesXML";
+                $.get(url + request, function(data) {
+                    console.log("Leyendo clientes...");
+                    var html = "";
+                    $(data).find("cliente").each(function(){
+                        var id = $(this).attr("idcliente");
+                        var nombre = $(this).find("nombre").text();
+                        var direccion = $(this).find("direccion").text();
+                        var email = $(this).find("email").text();
+                        var codigopostal = $(this).find("codigopostal").text();
+                        var paginaweb = $(this).find("paginaweb").text();
+                        var imagencliente = $(this).find("imagencliente").text();
+                        var option = $("<option>");
+                        option.val(id);
+                        option.text(nombre);
+                        $("#listaclientes").append(option);
+                    })
+
+                    $("#listaclientes").change(function() {
+                        var id = $(this).val() //EL ID OPTION
+                        $.get(url + request, function(data) {
+                            var filtro = "cliente[idcliente=" + id + "]";
+                            var nodo = $(data).find(filtro).first();
+                            var nombre = nodo.find("nombre").text();
+                            var direccion = nodo.find("direccion").text();
+                            var email = nodo.find("email").text();
+                            var codigopostal = nodo.find("codigopostal").text();
+                            var paginaweb = nodo.find("paginaweb").text();
+                            var imagencliente = nodo.find("imagencliente").text();
+                            var html = "<h2>" + nombre + "</h2>";
+                            html += "<hr/>";
+                            html += "<p>Dirección: " + direccion + "</p>";
+                            html += "<p>Email: " + email + "</p>";
+                            html += "<p>Código Postal: " + codigopostal + "</p>";
+                            html += "<p>Página Web: <a href='" + paginaweb + "' target='_blank'>" + paginaweb + "</a></p>";
+                            html += "<img src='" + imagencliente + "' style='width:300px' />";
+                            $("#contenedorclientes").html(html);
+                        })
+                    })   
                 })
             })
         })
