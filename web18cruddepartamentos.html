@@ -62,6 +62,7 @@
                 let localidad = $("#cajalocalidad").val();
                 let dataXML = getDepartamentoXML(id, nombre, localidad);
                 let request = "api/Departamentos/";
+
                 $.ajax({
                     url: url + request,
                     type: "PUT",
@@ -77,10 +78,11 @@
             $("#botondelete").click(function() {
                 let id = $("#cajaid").val();
                 let request = "api/Departamentos/" + id;
+                
                 $.ajax({
                     url: url + request,
                     type: "DELETE",
-                    
+
                     success: function() {
                         console.log("Eliminado");
                         loadDepartamentos();
