@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Jugadores JSON</h1>
+    <label>Seleccione un jugador</label>
+    <select id="selectjugador"></select>
+    <div id="containerjugador"></div>
+    <script src="js/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.getJSON("documents/jugadores.json", function(data) {
+                $.each(data.jugadores, function(index, jugador) {
+                    var name = jugador.nombre;
+                    var option = $("<option>", {"text": name});
+                    $("#selectjugador").append(option);
+                })
+            })
+            $("#selectjugador").change(function() {
+                var name = $("#selectjugador").val();
+                $.ajax({
+                    url: "documents/jugadores.json",
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        console.log("Leyendo...");
+                        html = "";
+                        $.each(data.jugadores, function(index, jugador) {
+                            var nombreJugador = jugador.nombre;
+                            if (nombreJugador == name) {
+                                var numero = jugador.numero;
+                                var nombre = jugador.nombre;
+                                var posicion = jugador.posicion;
+                                var edad = jugador.edad;
+                                var imagen = jugador.imagen;
+                                html += "<h2>" + nombre + "</h2>";
+                                html += "<p>Número: " + numero + "</p>";
+                                html += "<p>Posición: " + posicion + "</p>";
+                                html += "<p>Edad: " + edad + "</p>";
+                                html += "<img src='" + imagen + "' alt='" + nombre + "'/>";
+                            }
+                        })
+                        $("#containerjugador").html(html);
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+</html>
