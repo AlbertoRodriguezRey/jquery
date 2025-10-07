@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table id="tabladepartamentos" border="1">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <!--Crearemos un boton dinamico por cada departamento-->
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+        <tbody"></tbody>
+    </table>
+    <script src="js/jquery-3.7.1.js"></script>
+    <script>https://apicruddepartamentospgs.azurewebsites.net/webresources/departamentos
+        let url = "https://apicruddepartamentospgs.azurewebsites.net/"
+        $(document).ready(function() {
+            loadDepartamentos();
+        })
+
+        function loadDepartamentos() {
+            let request = "web/Departamentos";
+            $.getJSON(url + request, function(data) {
+                console.log("Leyendo...");
+                var html = "";
+                $.each(data, function(index, departamento) {
+                    html += "<tr>";
+                    html += "<td>" + departamento.numero + "</td>";
+                    html += "<td>" + departamento.nombre + "</td>";
+                    html += "<td>" + departamento.localidad + "</td>";
+                    html += "</tr>";
+                })
+                $("#tabladepartamento tbody").html(html);
+            })
+        }
+    </script>
+</body>
+</html>
