@@ -50,7 +50,7 @@
                     contentType: "application/xml",
                     data: dataXML,
                     success: function() {
-                        alert("Insertado");
+                        console.log("Insertado");
                         loadDepartamentos();
                     },
                 })
@@ -61,7 +61,31 @@
                 let nombre = $("#cajanombre").val();
                 let localidad = $("#cajalocalidad").val();
                 let dataXML = getDepartamentoXML(id, nombre, localidad);
+                let request = "api/Departamentos/";
+                $.ajax({
+                    url: url + request,
+                    type: "PUT",
+                    contentType: "application/xml",
+                    data: dataXML,
+                    success: function() {
+                        console.log("Modificado");
+                        loadDepartamentos();
+                    },
+                })
+            })
+
+            $("#botondelete").click(function() {
+                let id = $("#cajaid").val();
                 let request = "api/Departamentos/" + id;
+                $.ajax({
+                    url: url + request,
+                    type: "DELETE",
+                    
+                    success: function() {
+                        console.log("Eliminado");
+                        loadDepartamentos();
+                    },
+                })
             })
         })
 
