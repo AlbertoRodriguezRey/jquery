@@ -7,6 +7,15 @@
 </head>
 <body>
     <h1>Crud departamentos XML</h1>
+    <label>Id departamento</label><br/>
+    <input type="text" id="cajaid"/><br/>
+    <label>Nombre</label><br/>
+    <input type="text" id="cajanombre"/><br/>
+    <label>Localidad</label><br/>
+    <input type="text" id="cajalocalidad"/><br/><br/>
+    <button id="botoninsert">Insertar</button>
+    <button id="botonupdate">Modificar</button>
+    <button id="botondelete">Eliminar</button>
     <table id="tabladepartamentos" border="1">
         <thead>
             <tr>
@@ -22,8 +31,49 @@
         let url = "https://apicruddepartamentosxml.azurewebsites.net/";
         $(document).ready(function() {
             loadDepartamentos();
+            $("#botoninsert").click(function() {
+                let id = $("#cajaid").val();
+                let nombre = $("#cajanombre").val();
+                let localidad = $("#cajalocalidad").val();
+                //NECESITAMOS GENERAR UN STRING CON LA MISMA ESTRUCTURA
+                //QUE EL DOCUMENTO XML PARA SUS REGISTROS
+                let dataXML = "<Departamento>";
+                    dataXML += "<IdDepartamento>" + id + "</IdDepartamento>";
+                    dataXML += "<Nombre>" + nombre + "</Nombre>";
+                    dataXML += "<Localidad>" + localidad + "</Localidad>";
+                    dataXML += "</Departamento>";
+                let request = "api/Departamentos";
+                //REALIZAMOS LA PETICION CON AJAX
+                $.ajax({
+                    url: url + request,
+                    type: "POST",
+                    contentType: "application/xml",
+                    data: dataXML,
+                    success: function() {
+                        alert("Insertado");
+                        loadDepartamentos();
+                    },
+                })
+            })
 
+            $("#botonupdate").click(function() {
+                let id = $("#cajaid").val();
+                let nombre = $("#cajanombre").val();
+                let localidad = $("#cajalocalidad").val();
+                let dataXML = getDepartamentoXML(id, nombre, localidad);
+                let request = "api/Departamentos/" + id;
+            })
         })
+
+        function getDepartamentoXML(id, nombre, localidad) {
+            //COPIAMOS EL CODIGO DE GENERACION DEL OBJETO XML
+            let dataXML = "<Departamento>";
+                dataXML += "<IdDepartamento>" + id + "</IdDepartamento>";
+                dataXML += "<Nombre>" + nombre + "</Nombre>";
+                dataXML += "<Localidad>" + localidad + "</Localidad>";
+                dataXML += "</Departamento>";
+            return dataXML;
+        }
 
         function loadDepartamentos() {
             var request = "api/Departamentos";
