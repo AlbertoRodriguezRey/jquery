@@ -14,28 +14,62 @@
                 <th>Eliminar</th>
             </tr>
         </thead>
-        <tbody"></tbody>
+        <tbody></tbody>
     </table>
     <script src="js/jquery-3.7.1.js"></script>
-    <script>https://apicruddepartamentospgs.azurewebsites.net/webresources/departamentos
+    <script>
         let url = "https://apicruddepartamentospgs.azurewebsites.net/"
         $(document).ready(function() {
-            loadDepartamentos();
+            loadDepartamentos();   
         })
 
         function loadDepartamentos() {
-            let request = "web/Departamentos";
-            $.getJSON(url + request, function(data) {
-                console.log("Leyendo...");
-                var html = "";
-                $.each(data, function(index, departamento) {
-                    html += "<tr>";
-                    html += "<td>" + departamento.numero + "</td>";
-                    html += "<td>" + departamento.nombre + "</td>";
-                    html += "<td>" + departamento.localidad + "</td>";
-                    html += "</tr>";
-                })
-                $("#tabladepartamento tbody").html(html);
+            let request = "webresources/departamentos";
+            $.ajax ({
+                url: url + request,
+                method: "GET",
+                dataType: "json",
+                success: function(data) {
+                    console.log("Leyendo...");
+                    // Es buena práctica vaciar el cuerpo de la tabla antes de llenarlo
+                    $("#tabladepartamentos tbody").empty();
+                    $.each(data, function(index, departamento) {
+                        // 1. Crear la fila <tr>
+                        var tr = $("<tr>");
+
+                        // 2. Crear la celda <td> para el nombre y añadirla a la fila
+                        var tdNombre = $("<td>", { "text": departamento.nombre });
+                        tr.append(tdNombre);
+
+                        // 3. Crear el botón
+                        var boton = $("<button>", {
+                            "text": "Eliminar", // El texto del botón no debería depender de la localidad si no se muestra
+                            "value": departamento.numero
+                        });
+
+                        // 4. Crear la celda <td> para el botón, añadir el botón a la celda y la celda a la fila
+                        var tdBoton = $("<td>");
+                        tdBoton.append(boton);
+                        tr.append(tdBoton);
+
+                        // 5. Añadir la fila completa al cuerpo de la tabla
+                        $("#tabladepartamentos tbody").append(tr);
+                        // 6. Añadir el evento click al botón para eliminar el departamento
+                        boton.click(function() {
+                            let idDepartamento = $(this).val();
+                            console.log("Eliminando departamento con número: " + idDepartamento);
+                            let request = "webresources/departamentos/delete/" + idDepartamento;
+                            $.ajax({
+                                url: url + request,
+                                type: "DELETE",
+                                success: function() {
+                                    console.log("Departamento eliminado");
+                                    loadDepartamentos();
+                                }
+                            })
+                        })
+                    });
+                }
             })
         }
     </script>
