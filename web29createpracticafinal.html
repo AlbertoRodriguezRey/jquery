@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Bootstrap Template</title>
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">CRUD Doctores</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="web29homepracticafinal.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="web29createpracticafinal.html">Create Doctor</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page content-->
+        <div class="container">
+            <div class="text-center mt-5">
+                <h1>Agregar Doctor</h1>
+                <label>Id Hospital:</label><br/>
+                <input type="number" id="idhospital"/><br/>
+                <label>Apellido:</label><br/>
+                <input type="text" id="apellido"/><br/>
+                <label>Especialidad:</label><br/>
+                <input type="text" id="especialidad"/><br/>
+                <label>Salario:</label><br/>
+                <input type="number" id="salario"/><br/><br/>
+                <button id="creardoctor" class="btn btn-primary">Crear Doctor</button>
+            </div>
+        </div>
+        <!--Sweet Alert-->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <!-- Bootstrap core JS-->
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/jquery-3.7.1.js"></script>
+        <script>
+            let url = "https://apicruddoctores.azurewebsites.net/";
+            $(document).ready(function () {
+                $("#creardoctor").click(function() {
+                    var idHospital = parseInt($("#idhospital").val());
+                    var apellido = $("#apellido").val();
+                    var especialidad = $("#especialidad").val();
+                    var salario = parseInt($("#salario").val());
+                    var doctor = new Object();
+                    doctor.idHospital = idHospital;
+                    doctor.apellido = apellido;
+                    doctor.especialidad = especialidad;
+                    doctor.salario = salario;
+                    var requestPost = "api/Doctores";
+                    $.ajax({
+                        url: url + requestPost,
+                        type: "POST",
+                        data: JSON.stringify(doctor),
+                        contentType: "application/json",
+                        success: function(data) {
+                            console.log("Doctor creado");
+                            Swal.fire({
+                                title: "¡Creado!",
+                                text: "El doctor ha sido creado.",
+                                icon: "success",
+                                confirmButtonText: "OK",
+                                timerProgressBar: true,
+                                timer: 3000,
+                            }).then((result) => {
+                                window.location.href = "web29homepracticafinal.html";
+                            });
+                        },
+                    })
+                })
+            })
+        </script>
+    </body>
+</html>

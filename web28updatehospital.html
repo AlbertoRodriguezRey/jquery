@@ -175,10 +175,71 @@
     </nav>
     <main class="container">
         <div class="bg-body-tertiary p-5 rounded">
-            <h1>Details</h1>
+            <h1>Modificar hospital</h1>
+            <input type="hidden" id="cajaid" class="form-control"/><br/>
+            <label>Nombre</label><br/>
+            <input type="text" id="cajanombre" class="form-control"/><br/>
+            <label>Dirección</label><br/>
+            <input type="text" id="cajadireccion" class="form-control"/><br/>
+            <label>Teléfono</label><br/>
+            <input type="text" id="cajatelefono" class="form-control"/><br/>
+            <label>Camas</label><br/>
+            <input type="text" id="cajacamas" class="form-control"/><br/><br/>
+            <button id="botonmodificar" class="btn btn-info">
+                Modificar hospital
+            </button>
         </div>
     </main>
     <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-3.7.1.js"></script>
+    <script>
+        let url = "https://apicrudhospital.azurewebsites.net/";
+        $(document).ready(function () {
+
+            $("#botonmodificar").click(function() {
+                var id = parseInt($("#cajaid").val());
+                var nombre = $("#cajanombre").val();
+                var direccion = $("#cajadireccion").val();
+                var telefono = $("#cajatelefono").val();
+                var camas = parseInt($("#cajacamas").val());
+                var hospital = new Object();
+                hospital.idhospital = id;
+                hospital.nombre = nombre;
+                hospital.direccion = direccion;
+                hospital.telefono = telefono;
+                hospital.camas = camas;
+                var hospitalJSON = JSON.stringify(hospital);
+                console.log(hospitalJSON);
+                var requestPUT = "webresources/hospitales/put";
+                $.ajax({
+                    url: url + requestPUT,
+                    type: "PUT",
+                    contentType: "application/json",
+                    data: hospitalJSON,
+                    success: function (data) {
+                        console.log("updated");
+                        window.location.href = "web28homehospital.html?idhospital=" + id;
+                    }
+                })
+                
+            })
+
+            var params = new URLSearchParams(window.location.search);
+            var idhospital = params.get('idhospital');
+            var requestFind = "webresources/hospitales/" + idhospital;
+            $.ajax({
+                url: url + requestFind,
+                type: "GET",
+                success: function (data) {
+                    $("#cajaid").val(data.idhospital);
+                    $("#cajanombre").val(data.nombre);
+                    $("#cajadireccion").val(data.direccion);
+                    $("#cajatelefono").val(data.telefono);
+                    $("#cajacamas").val(data.camas);
+                },
+            })
+        })
+    </script>
 </body>
 
 </html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Bootstrap Template</title>
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">CRUD Doctores</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="web29homepracticafinal.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="web29createpracticafinal.html">Create Doctor</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page content-->
+        <div class="container">
+            <div class="text-center mt-5">
+                <h1>Modificar Doctor</h1>
+                <label>Id Doctor:</label><br/>
+                <input type="number" id="iddoctor" class="form-control"/><br/>
+                <label>Id Hospital:</label><br/>
+                <input type="number" id="idhospital" class="form-control"/><br/>
+                <label>Apellido:</label><br/>
+                <input type="text" id="apellido" class="form-control"/><br/>
+                <label>Especialidad:</label><br class="form-control"/>
+                <input type="text" id="especialidad" class="form-control"/><br/>
+                <label>Salario:</label><br/>
+                <input type="number" id="salario" class="form-control"/><br/><br/>
+                <button id="editardoctor" class="btn btn-primary">Editar Doctor</button>
+            </div>
+        </div>
+        <!--Sweet Alert-->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <!-- Bootstrap core JS-->
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/jquery-3.7.1.js"></script>
+        <script>
+            let url = "https://apicruddoctores.azurewebsites.net/";
+            $(document).ready(function() {
+
+                var params = new URLSearchParams(window.location.search);
+                var idDoctor = params.get("idDoctor");
+                var requestFind = "api/Doctores/" + idDoctor;
+
+                $.ajax({
+                    url: url + requestFind,
+                    type: "GET",
+                    contentType: "application/json",
+                    success: function(data) {
+                        $("#iddoctor").val(data.idDoctor);
+                        $("#idhospital").val(data.idHospital);
+                        $("#apellido").val(data.apellido);
+                        $("#especialidad").val(data.especialidad);
+                        $("#salario").val(data.salario);
+                    },
+                })
+
+                $("#editardoctor").click(function() {
+                    var idDoctor = parseInt($("#iddoctor").val());
+                    var idHospital = parseInt($("#idhospital").val());
+                    var apellido = $("#apellido").val();
+                    var especialidad = $("#especialidad").val();
+                    var salario = parseInt($("#salario").val());
+                    var doctor = new Object();
+                    doctor.idDoctor = idDoctor;
+                    doctor.idHospital = idHospital;
+                    doctor.apellido = apellido;
+                    doctor.especialidad = especialidad;
+                    doctor.salario = salario;
+                    var doctorJSON = JSON.stringify(doctor);
+                    console.log(doctorJSON);
+                    var requestPUT = "api/Doctores";
+                    $.ajax({
+                        url: url + requestPUT,
+                        type: "PUT",
+                        contentType: "application/json",
+                        data: doctorJSON,
+                        success: function(data) {
+                            console.log("Doctor modificado");
+                            Swal.fire({
+                                title: "¡Modificado!",
+                                text: "El doctor ha sido modificado.",
+                                icon: "success",
+                                confirmButtonText: "OK",
+                                timerProgressBar: true,
+                                timer: 3000,
+                            }).then((result) => {
+                                window.location.href = "web29homepracticafinal.html";
+                            });
+                        },
+                    })
+                })
+
+                // var params = new URLSearchParams(window.location.search);
+                // var idDoctor = params.get("idDoctor");
+                // var requestFind = "api/Doctores/" + idDoctor;
+                // $.ajax({
+                //     url: url + requestFind,
+                //     type: "GET",
+                //     success: function(data) {
+                //         $("#iddoctor").val(data.idDoctor);
+                //         $("#idhospital").val(data.idHospital);
+                //         $("#apellido").val(data.apellido);
+                //         $("#especialidad").val(data.especialidad);
+                //         $("#salario").val(data.salario);
+                //     },
+                // })
+            })
+        </script>
+    </body>
+</html>
